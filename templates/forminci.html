@@ -1,0 +1,242 @@
+<html>
+    <head>
+        <title>Formulario de incidencias</title>
+        <style>
+.button {
+  font: bold 24px Arial;
+  text-decoration: none;
+  background-color: lightgray;
+  color: #333333;
+  padding: 24px 36px;
+  border: 1px solid black;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+#boton_camara:hover {
+  background-color: #e5e0e0;
+}
+
+#boton_submit {
+  background-color: #e5e0e0;
+  width: 50%;
+}
+
+textarea {
+  padding: 30px;
+  font-size: 28px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  width: 70%;
+  resize: none;
+}
+
+body {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+h3 {
+  color: rgb(0, 0, 0);
+  font-weight: lighter;
+  font-family: 'Times New Roman', Times, serif;
+  line-height: 1.5;
+  font-size: 2.5rem;
+  word-spacing: 2px;
+  font-weight: 500;
+  margin: 30px 20px;
+}
+
+#hr_titulo {
+  border: none;
+  width: 90%;
+  height: 2px;
+  margin-top: 0px;
+  border-bottom: 1px solid #170f0a;
+  box-shadow: 0 20px 25px -23px #333;
+  margin-bottom: 90px;
+}
+
+#titulo_incidencias {
+  font-family: "Montserrat";
+  margin: 40px 20px 10px;
+  padding-top: 25px;
+  font-size: 3rem;
+}
+
+hr {
+  margin-bottom: 80px;
+  margin-top: 80px;
+  width: 50%;
+}
+
+.botones_camara_submit {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+#imagen {
+  margin: 30px 15px 70px;
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 150px;
+  background-color: #f2f2f2;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 5px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  width: 150px;
+}
+
+select {
+  padding: 16px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  width: 70%;
+}
+
+input[type="submit"] {
+  font-size: 24px;
+}
+
+/* Estilos responsivos para dispositivos móviles */
+@media (max-width: 600px) {
+  .button {
+    font-size: 28px;
+    padding: 28px 40px;
+    width: 100%;
+  }
+
+  #boton_submit,
+  #boton_camara {
+    width: 50%;
+  }
+
+  textarea {
+    padding: 28px;
+    font-size: 32px;
+    width: 100%;
+  }
+
+  h3 {
+    font-size: 3rem;
+    margin: 40px 30px;
+  }
+
+  #hr_titulo {
+    margin-bottom: 120px;
+  }
+
+  #titulo_incidencias {
+    font-size: 3.5rem;
+    margin: 50px 30px 10px;
+    padding-top: 30px;
+  }
+
+  img {
+    width: 75%;
+  }
+  select {
+    padding: 14px;
+    font-size: 18px;
+    width: 100%;
+  }
+  input[type="submit"] {
+    font-size: 20px;
+  }
+}
+        </style>
+    </head>
+    <body>
+        <h1 id="titulo_incidencias">INCIDENCIAS</h1>
+        <hr id="hr_titulo">
+        <form action="{{ url_for('submitforminc') }}" method="post">
+            <input type="hidden" name="image" id="image" value="{{ temp | safe }}">
+            <h3>Tipo de incidencia</h3>
+            <select id="tipoincidencia" name="tipoincidencia">
+                {{ tipoincidencia | safe }}
+            </select>
+            <br>
+            <hr>
+            <h3>Tipo de articulo</h3>
+            <select id="tipoarticulo" name="tipoarticulo">
+                {{ tipoarticulo1 | safe }}
+            </select>
+            <hr>
+            <h3>Articulo</h3>
+            <select id="articulo" name="articulo">
+            </select>
+            <hr>
+            <h3>Descripcion</h3>
+            <textarea type="text" id="descripcion" name="descripcion"></textarea>
+            <hr>
+            <h3>Foto</h3>
+            <div class="container">
+                <div class="sidebar">
+                  <ul>
+                    <li><img src="{{ img2 }}" id="imagen"></li>
+                  </ul>
+                </div>
+                <div class="content">
+                </div>
+              </div>
+            
+            <div class="botones_camara_submit">
+            <a href="{{ url_for('camara') }}" class="button" id="boton_camara">CAMARA</a>
+            <input type="submit" id="boton_submit" value="Enviar"/>
+            </div>
+        </form>
+        <script>
+            var tipoarticulo=document.getElementById('tipoarticulo');
+            var articulo=document.getElementById('articulo');
+            var options = {
+                {{ art | safe }}
+            };
+            function actualizar() {
+                var select = tipoarticulo.value;
+                articulo.innerHTML = '';
+                var opcionesnew = options[select];
+                opcionesnew.forEach(function(option1) {
+                    var option = document.createElement('option');
+                    option.text = option1;
+                    articulo.add(option);
+                });
+            }
+            
+            tipoarticulo.addEventListener('change', actualizar);
+            actualizar();
+        </script>
+    </body>
+
+
+</html>

@@ -1,0 +1,271 @@
+@app.route("/")
+def index():
+    return 'Hola mundo!'
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "POST":
+        usr = request.form['username'] 
+        passwd = request.form['password']
+        return redirect(url_for("mostrar"))
+    else:
+        return render_template('singup.html')
+
+@app.route("/mostrar", methods=["GET"])
+def mostrar():
+    
+    usr = request.form['usr']
+    passwd = request.form['passwd']
+    return f"<h1>Usuario: {usr} <br> Password: {passwd}"
+
+
+
+    function mostrarCampo() {
+      var campoPassword = document.getElementById("password");
+      var botonSubmit = document.getElementById("boton-submit");
+      var valorBoton = document.getElementById("valor-boton");
+      campoPassword.style.display = "block";
+      botonSubmit.style.display = "block";
+      valorBoton.value = document.getElementById("boton").value;
+
+      // Remover la clase 'selected' de todos los botones
+      var botones = document.getElementsByClassName("button");
+      for (var i = 0; i < botones.length; i++) {
+        botones[i].classList.remove("selected");
+      }
+
+      // Agregar la clase 'selected' al botón seleccionado
+      event.target.classList.add("selected");
+    }
+
+
+        function mostrarCampo(value) {
+    var campoPassword = document.getElementById("password");
+    var botonSubmit = document.getElementById("boton-submit");
+    var valorBoton = document.getElementById("valor-boton");
+    var usernameInput = document.getElementById("username"); // Obtener el campo de entrada "username"
+    
+    campoPassword.style.display = "block";
+    botonSubmit.style.display = "block";
+
+    alert(valorBoton.value);
+    //alert(valorBoton.innerHTML);
+    //alert(valorBoton.innerText);
+
+    valor=valorBoton.value;
+    usernameInput.value=valor;
+
+    alert(usernameInput.value);
+    // Remover la clase 'selected' de todos los botones
+    var botones = document.getElementsByClassName("button");
+    for (var i = 0; i < botones.length; i++) {
+      botones[i].classList.remove("selected");
+    }
+
+    // Agregar la clase 'selected' al botón seleccionado
+    event.target.classList.add("selected");
+  }
+  </script>
+
+  <html>
+    <head>
+        <title>Formulario de incidencias</title>
+    </head>
+    <body>
+        <h1>Incidencias</h1>
+        <form action="{{ url_for('submitforminc') }}" method="post">
+            <h3>Tipo de incidencia</h3>
+            <select id="tipoincidencia">
+                {{ tipoincidencia | safe }}
+            </select>
+            <br>
+            <h3>Tipo de articulo</h3>
+            <select id="tipoarticulo">
+                {{ tipoarticulo1 | safe }}
+            </select>
+            <h3>Articulo</h3>
+            <select id="articulo">
+            </select>
+        </form>
+        <script>
+            var tipoarticulo=document.getElementById('tipoarticulo');
+            var articulo=document.getElementById('articulo');
+            var options = {
+                {{ art | safe }}
+            };
+            function actualizar() {
+                var select = tipoarticulo.value
+                articulo.innerHTML = '';
+                var opcionesnew = options[select];
+                opcionesnew.forEach(function(option1) {
+                    var option = document.createElement('option');
+                    option.text = option1;
+                    articulo.add(option);
+                
+                });
+            tipoarticulo.addEventListener('change',actualizar);
+            actualizar();
+            }
+        </script>
+    </body>
+
+
+</html>
+
+@app.route('/incident', methods=["POST", "GET"])
+def incidencias():
+    if 'temp' in request.form:
+        image=request.form['temp']
+    else:
+        image='temp.jpg'
+    tipoinc=engine.eng.tipoinc()
+    tipoarticulo=engine.eng.tipoarti()
+    articulos=engine.eng.articulos()
+    if "user" in session:
+        if request.method == "POST":
+            data=request.get_json()
+            if 'image' in data:
+                image=data['image']
+                return render_template("forminci.html", tipoincidencia=tipoinc, tipoarticulo1=tipoarticulo, art=articulos, temp=image)
+        else:
+            return render_template("forminci.html", tipoincidencia=tipoinc, tipoarticulo1=tipoarticulo, art=articulos, img2=image, temp=image)
+    else:
+        return redirect(url_for('login'))
+
+
+
+
+
+        // Obtener el video y el botón de captura
+        const video = document.getElementById('video');
+        const captureBtn = document.getElementById('capture-btn');
+        const canvas = document.getElementById('canvas');
+        const canvasContext = canvas.getContext('2d');
+        const imageDataField = document.getElementById('image-data');
+        
+        // Acceder a la cámara y mostrar el flujo de video en el elemento <video>
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: 'environment' } } })
+          .then(stream => {
+            video.srcObject = stream;
+          })
+          .catch(error => {
+            console.error('Error al acceder a la cámara:', error);
+          });
+        
+        // Función para capturar la foto
+        function capturePhoto() {
+          // Asegurarse de que el video esté pausado
+          video.pause();
+        
+          // Dibujar el cuadro de video en el lienzo
+          canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+          // Convertir el lienzo a una imagen codificada en base64
+          const imageData = canvas.toDataURL('image/jpeg');
+        
+          // Establecer el valor del campo oculto con la imagen capturada
+          imageDataField.value = imageData;
+        
+          // Enviar el formulario al servidor
+          document.getElementById('captura-form').submit();
+        }
+        
+        // Agregar un event listener al botón de captura para llamar a la función capturePhoto() cuando se haga clic
+        captureBtn.addEventListener('click', capturePhoto);
+
+
+        .button {
+                font: bold 11px Arial;
+                text-decoration: none;
+                background-color: lightgray;
+                color: #333333;
+                padding: 10px 10px;
+                border: 1px solid black;
+            }
+            #boton_camara:hover{
+                background-color: #e5e0e0;
+            }
+            select{
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: #fff;
+                color: #333;
+                width: auto;
+                margin-bottom: 20px;
+            }
+            body{
+                align-items: center;
+                text-align: center;
+                justify-content: center;
+            }
+            h3{
+                color: rgb(0, 0, 0);
+                font-weight: lighter;
+                font-family: 'Times New Roman', Times, serif;
+                line-height: 1.5;
+                font-size: 1.7rem;
+                word-spacing: 2px;
+                font-weight: 500;
+                margin: 25px 15px 25px 15px;
+            }
+            #hr_titulo{
+                border: none;
+                width: 90%;
+                height: 50px;
+                margin-top: 0px;
+                border-bottom: 1px #170f0a;
+                box-shadow: 0 20px 25px -23px #333;
+                margin-bottom: 70px;
+            }
+            #titulo_incidencias{
+                font-family: "Montserrat";
+                margin: 30px 15px 10px 15px;
+                padding-top: 20px;
+            }
+            hr{
+                margin-bottom: 60px;
+                margin-top: 60px;
+                width: 50%; 
+            }
+            .botones_camara_submit{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-evenly;
+                margin-top: 50px;
+                margin-bottom: 50px;
+                
+            }
+            #imagen {
+                margin: 20px 10px 50px 10px;
+            }
+
+
+            .container {
+            display: flex;
+            }
+
+            .sidebar {
+            width: 150px;
+            background-color: #f2f2f2;
+            margin-left: auto;
+            margin-right: auto;
+            }
+
+            ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            }
+
+            li {
+            padding: 5px;
+            }
+
+            img {
+            max-width: 100%;
+            height: auto;
+            }
+

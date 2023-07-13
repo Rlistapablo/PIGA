@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset = "UTF-8">
+  <title>Login</title>
+  <style>
+    @media screen and (max-width: 900px) {
+    
+    .container .button{
+      flex: 1 25%;  
+      margin: 10px 30px 10px 30px;
+      background-color: #ccc;
+      text-align: center; 
+      align-items: center;
+      justify-content: center; 
+    }    
+    }
+    @media screen and (max-width: 600px) {
+          
+    .container .button{
+        flex: 1 1 33%;  
+        width: 50%;
+        margin: 10px 30px 10px 30px;
+        background-color: #ccc;
+        text-align: center; 
+        align-items: center;
+        justify-content: center;
+    }
+    }
+    .container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      align-items: flex-end;
+      text-align: center; 
+    }
+
+    .button {
+      padding: 12px 30px;  
+      cursor: pointer;  
+      font-size: 16px;  
+      text-align: center;  
+      border-radius: 3px 3px 3px 3px;
+      flex: 1 1 20%;  
+      margin: 10px 30px 10px 30px;
+      background-color: #ccc;
+      text-align: center; 
+    }
+
+    .button:hover{
+        background-color: #e9e6e6;
+    }
+
+    .titulo{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 20px 20px 20px 20px;
+    }
+
+    .titulo h1{
+        font-size: 2.5rem;
+    }
+
+    .form-group {  
+      margin-top: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .input-container{
+        justify-content: center;
+        text-align: center; 
+    }
+    .password_box{ 
+        box-sizing: border-box;
+        width: 50%; 
+        /*Le pongo el width al 50% y vía, que el flex no me esta funcionando.*/
+        font-size: 30px;
+        padding: 15px;
+        margin-bottom: 40px;
+        border-radius: 5px;
+        border: black solid 1px;
+    }
+    #boton-submit{
+        padding: 10px 30px;
+        font-size: 20px;
+        background-color: rgb(133, 190, 228);
+        cursor: pointer;
+        text-align: center;  
+        border-radius: 3px 3px 3px 3px;
+        font-size: 16px; 
+        margin-top: 10px;
+    }
+    #boton-submit:hover{
+        background-color: #f6f5f5;
+    }
+  </style>
+  <script>
+
+
+
+    function mostrarCampo(value) {
+    var campoPassword = document.getElementById("password");
+    var botonSubmit = document.getElementById("boton-submit");
+    var boton = document.getElementById("boton"+value);
+    var usernameInput = document.getElementById("username");
+    
+    campoPassword.style.display = "block";
+    botonSubmit.style.display = "block";
+
+    usernameInput.value=boton.value
+
+
+  }
+  </script>
+</head>
+<body>
+  <div>
+    <h1>Inicio de sesión</h1>
+  </div>
+  <form action="{{ url_for('data') }}" method="post">
+    <div class="container">
+      {{botones | safe}}
+    </div>
+    <div class="form-group">
+      <div class="form-group" id="password" style="display: none;">
+        <div class="input-container">
+          <input type="password" name="password" placeholder="Contraseña" />
+        </div>
+        <input type="hidden" id="username" name="username"/>
+      </div>
+      <input type="submit" id="boton-submit" value="Enviar" style="display: none;" />
+    </div>
+  </form>
+</body>
+</html>
